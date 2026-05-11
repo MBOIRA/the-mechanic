@@ -29,7 +29,7 @@ const AdminPayments = () => {
 
   const fetchSubscriptions = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/admin/subscriptions', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/subscriptions`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -47,7 +47,7 @@ const AdminPayments = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/admin/subscriptions/stats', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/subscriptions/stats`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

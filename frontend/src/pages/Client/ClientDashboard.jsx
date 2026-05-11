@@ -64,7 +64,7 @@ const ClientDashboard = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/bookings', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -82,7 +82,7 @@ const ClientDashboard = () => {
 
   const fetchMechanics = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/mechanics')
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/mechanics`)
       const data = await response.json()
       if (response.ok) {
         setMechanics(data.mechanics || [])
@@ -94,7 +94,7 @@ const ClientDashboard = () => {
 
   const fetchVehicles = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/vehicles', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/vehicles`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -122,7 +122,7 @@ const ClientDashboard = () => {
   const handleAddVehicle = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('http://localhost:5000/api/vehicles', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/vehicles`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ const ClientDashboard = () => {
   const handleDeleteVehicle = async (id) => {
     if (window.confirm('Are you sure you want to remove this vehicle?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/vehicles/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/vehicles/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -26,7 +26,7 @@ const BookingChat = ({ bookingId, otherUser }) => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}/messages`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings/${bookingId}/messages`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -47,7 +47,7 @@ const BookingChat = ({ bookingId, otherUser }) => {
     if (!newMessage.trim()) return
 
     try {
-      const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}/messages`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings/${bookingId}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

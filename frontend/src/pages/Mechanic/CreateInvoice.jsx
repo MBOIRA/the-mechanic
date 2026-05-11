@@ -36,7 +36,7 @@ const CreateInvoice = () => {
 
   const fetchBooking = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings/${bookingId}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -97,7 +97,7 @@ const CreateInvoice = () => {
     setError('')
     
     try {
-      const response = await fetch('http://localhost:5000/api/invoices', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/invoices`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ const CreateInvoice = () => {
       if (response.ok) {
         if (sendToClient) {
           // Send invoice to client
-          await fetch(`http://localhost:5000/api/invoices/${data.invoice._id}/send`, {
+          await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/invoices/${data.invoice._id}/send`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`

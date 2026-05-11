@@ -38,7 +38,7 @@ const BookingForm = () => {
 
   const fetchMechanic = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/mechanics/${mechanicId}`)
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/mechanics/${mechanicId}`)
       const data = await response.json()
       if (response.ok) {
         setMechanic(data.mechanic)
@@ -180,7 +180,7 @@ const BookingForm = () => {
         }]
       }
 
-      const response = await fetch('http://localhost:5000/api/bookings', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

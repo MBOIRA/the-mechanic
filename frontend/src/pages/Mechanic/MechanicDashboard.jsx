@@ -51,7 +51,7 @@ const MechanicDashboard = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/bookings/mechanic/${user.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings/mechanic/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -70,7 +70,7 @@ const MechanicDashboard = () => {
   const handleToggleEmergency = async () => {
     try {
       const newStatus = !emergencyAvailable
-      const response = await fetch('http://localhost:5000/api/auth/profile', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

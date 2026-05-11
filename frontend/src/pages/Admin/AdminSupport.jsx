@@ -29,7 +29,7 @@ const AdminSupport = () => {
         return;
       }
       
-      const response = await fetch('http://localhost:5000/api/inquiries', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/inquiries`, {
         headers: {
           'Authorization': `Bearer ${authToken}`
         }
@@ -54,7 +54,7 @@ const AdminSupport = () => {
 
     try {
       const authToken = getToken();
-      const response = await fetch(`http://localhost:5000/api/inquiries/${id}/response`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/inquiries/${id}/response`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,

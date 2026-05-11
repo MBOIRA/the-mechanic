@@ -30,7 +30,7 @@ const MechanicBookings = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/bookings/mechanic/${user.id}?status=${filter}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings/mechanic/${user.id}?status=${filter}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -72,7 +72,7 @@ const MechanicBookings = () => {
   const handleStatusUpdate = async (bookingId, newStatus) => {
     setUpdating(bookingId)
     try {
-      const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}/status`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings/${bookingId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

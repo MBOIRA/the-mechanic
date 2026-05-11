@@ -45,7 +45,7 @@ const EmergencyMechanics = () => {
 
   const fetchMechanics = async (userLat = null, userLng = null) => {
     try {
-      const response = await fetch('http://localhost:5000/api/mechanics')
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/mechanics`)
       const data = await response.json()
       if (response.ok) {
         let mechanicsList = data.mechanics || []

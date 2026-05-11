@@ -135,7 +135,7 @@ const EmergencyBooking = () => {
 
   const fetchMechanics = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/mechanics')
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/mechanics`)
       const data = await response.json()
       if (response.ok) {
         // Get all mechanics, not just emergency ones
@@ -225,7 +225,7 @@ const EmergencyBooking = () => {
 
       const token = localStorage.getItem('token')
 
-      const response = await fetch('http://localhost:5000/api/bookings/emergency', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings/emergency`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

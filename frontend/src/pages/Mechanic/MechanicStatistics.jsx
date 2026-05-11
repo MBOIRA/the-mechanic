@@ -26,7 +26,7 @@ const MechanicStatistics = () => {
     try {
       const token = localStorage.getItem('token')
 
-      const bookingsResponse = await fetch(`http://localhost:5000/api/bookings/mechanic/${user.id}`, {
+      const bookingsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings/mechanic/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -57,7 +57,7 @@ const MechanicStatistics = () => {
         let averageRating = 0
         let totalReviews = 0
         try {
-          const ratingResponse = await fetch(`http://localhost:5000/api/bookings/mechanic/${user.id}/average-rating`)
+          const ratingResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings/mechanic/${user.id}/average-rating`)
           const ratingData = await ratingResponse.json()
           if (ratingResponse.ok) {
             averageRating = ratingData.average
