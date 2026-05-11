@@ -1,0 +1,20 @@
+{
+  "name": "windsurf-project",
+  "version": "1.0.0",
+  "description": "A comprehensive vehicle service platform that connects vehicle owners with qualified mechanics for roadside assistance and garage services.",
+  "main": "index.js",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && PORT=3000 npx vite",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend:custom": "cd frontend && npx vite",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
