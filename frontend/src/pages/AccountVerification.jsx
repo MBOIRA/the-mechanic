@@ -52,13 +52,17 @@ const AccountVerification = () => {
       // Navigate to appropriate dashboard
       if (formData.role === 'mechanic') {
         navigate('/mechanic/dashboard')
-      } else {
-        const pendingEmergency = localStorage.getItem('pendingEmergencyBooking')
-        const pendingInquiry = localStorage.getItem('pendingInquiry')
-        
-        if (pendingEmergency) {
-          navigate('/client/emergency', { state: { autoSubmit: true } })
-        } else if (pendingInquiry) {
+        } else {
+          const pendingEmergency = localStorage.getItem('pendingEmergencyBooking')
+          const pendingInquiry = localStorage.getItem('pendingInquiry')
+          const pendingBookingData = localStorage.getItem('pendingBooking')
+          const pendingBookingMechanic = localStorage.getItem('pendingBookingMechanic')
+          
+          if (pendingEmergency) {
+            navigate('/client/emergency', { state: { autoSubmit: true } })
+          } else if (pendingBookingData && pendingBookingMechanic) {
+            navigate(`/book/${pendingBookingMechanic}`, { state: { autoSubmit: true } })
+          } else if (pendingInquiry) {
           // Auto-submit the pending inquiry
           try {
             const inquiryData = JSON.parse(pendingInquiry)

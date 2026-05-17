@@ -250,9 +250,13 @@ const CreateAccountPage = () => {
         } else {
           const pendingEmergency = localStorage.getItem('pendingEmergencyBooking')
           const pendingInquiry = localStorage.getItem('pendingInquiry')
+          const pendingBookingData = localStorage.getItem('pendingBooking')
+          const pendingBookingMechanic = localStorage.getItem('pendingBookingMechanic')
           
           if (pendingEmergency) {
             navigate('/client/emergency', { state: { autoSubmit: true } })
+          } else if (pendingBookingData && pendingBookingMechanic) {
+            navigate(`/book/${pendingBookingMechanic}`, { state: { autoSubmit: true } })
           } else if (pendingInquiry) {
             // Auto-submit the pending inquiry
             try {
@@ -310,18 +314,18 @@ const CreateAccountPage = () => {
       <div className={`${!isLogin && formData.role === 'mechanic' ? 'max-w-5xl' : 'max-w-md'} mx-auto w-full space-y-8`}>
         <div>
           <div className="flex justify-center">
-            <div className="flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-xl">
+            <div className="flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-xl">
               <Wrench className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h2 className="mt-6 text-center text-4xl font-bold bg-gradient-to-r from-blue-900 to-indigo-900 bg-clip-text text-transparent">
+          <h2 className="mt-6 text-center text-4xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
             {isLogin ? 'Sign in to your account' : 'Create your account'}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             {isLogin ? "Don't have an account? " : "Already have an account? "}
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-indigo-700"
+              className="font-semibold bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent hover:from-primary-700 hover:to-primary-600"
             >
               {isLogin ? 'Sign up' : 'Sign in'}
             </button>
@@ -331,7 +335,7 @@ const CreateAccountPage = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {!isLogin && (
             <div className="space-y-4">
-              <div className="flex space-x-4">
+              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
                 <div className="flex-1">
                   <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700">
                     First Name
@@ -391,7 +395,7 @@ const CreateAccountPage = () => {
                 <label className="block text-sm font-semibold text-gray-700 mb-3">
                   I am a:
                 </label>
-                <div className="flex space-x-4">
+                <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
                   <label className="flex items-center px-4 py-3 bg-white border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all duration-200 flex-1 justify-center">
                     <input
                       type="radio"
@@ -446,7 +450,7 @@ const CreateAccountPage = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Specializations
                     </label>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {specializations.map(spec => (
                         <label key={spec} className="flex items-center">
                           <input
@@ -521,7 +525,7 @@ const CreateAccountPage = () => {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="city" className="block text-sm font-medium text-gray-700">
                         City
@@ -592,7 +596,7 @@ const CreateAccountPage = () => {
 
                   <h3 className="text-lg font-medium text-gray-900">Pricing</h3>
                   
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="hourlyRate" className="block text-sm font-medium text-gray-700">
                         Hourly Rate ($)
@@ -634,7 +638,7 @@ const CreateAccountPage = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Certifications
                     </label>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {certifications.map(cert => (
                         <label key={cert} className="flex items-center">
                           <input
@@ -655,7 +659,7 @@ const CreateAccountPage = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Availability
                     </label>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {Object.entries(formData.availability).map(([day, available]) => (
                         <label key={day} className="flex items-center">
                           <input
@@ -699,7 +703,7 @@ const CreateAccountPage = () => {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Login as
               </label>
-              <div className="flex space-x-4">
+              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
                 <label className="flex items-center">
                   <input
                     type="radio"

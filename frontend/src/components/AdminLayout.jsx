@@ -43,34 +43,36 @@ const AdminLayout = () => {
           >
             {isSidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
-          <span className="font-semibold text-gray-900">Admin Panel</span>
+          <span className="font-black text-gray-900 tracking-tight uppercase">Admin<span className="text-primary-500">Panel</span></span>
         </div>
       </header>
 
       <div className="flex">
         {/* Sidebar - Desktop */}
-        <aside className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-gray-900 text-white border-r border-gray-800">
+        <aside className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-gray-950 text-white border-r border-gray-900">
           <div className="flex flex-col h-full">
             {/* Logo */}
-            <div className="flex items-center px-6 py-4 border-b border-gray-800">
-              <Link to="/admin/dashboard" className="flex items-center space-x-2">
-                <ShieldAlert className="h-8 w-8 text-blue-500" />
-                <span className="text-xl font-bold">Admin Panel</span>
+            <div className="flex items-center px-6 py-6 border-b border-gray-900">
+              <Link to="/admin/dashboard" className="flex items-center space-x-3 group">
+                <div className="bg-primary-500 p-2 rounded-lg group-hover:bg-primary-600 transition-colors shadow-sm">
+                  <ShieldAlert className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-xl font-black text-white tracking-tight uppercase">Admin<span className="text-primary-500">Panel</span></span>
               </Link>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 px-4 py-6 space-y-1">
+            <nav className="flex-1 px-4 py-6 space-y-2">
               {navigation.map((item) => {
                 const isActive = location.pathname.startsWith(item.href)
                 return (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    className={`flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-bold transition-colors ${
                       isActive
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                        ? 'bg-primary-600 text-white'
+                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
                     }`}
                   >
                     <item.icon className="h-5 w-5" />
@@ -82,25 +84,25 @@ const AdminLayout = () => {
             </nav>
 
             {/* User Section */}
-            <div className="p-4 border-t border-gray-800">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="h-10 w-10 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
+            <div className="p-4 border-t border-gray-900">
+              <div className="flex items-center space-x-3 mb-4 p-3 bg-gray-900 rounded-xl border border-gray-800">
+                <div className="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center overflow-hidden">
                   {user?.profileImage ? (
                     <img src={user.profileImage} alt="Profile" className="h-10 w-10 rounded-full object-cover" />
                   ) : (
-                    <User className="h-5 w-5 text-gray-400" />
+                    <User className="h-5 w-5 text-white" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">
+                  <p className="text-sm font-bold text-white truncate">
                     {user?.firstName} {user?.lastName}
                   </p>
-                  <p className="text-xs text-gray-400 truncate">{user?.email}</p>
+                  <p className="text-xs text-gray-400 font-medium truncate">{user?.email}</p>
                 </div>
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-800 transition-colors"
+                className="flex items-center space-x-2 w-full px-3 py-3 rounded-lg text-sm font-bold text-gray-400 hover:bg-red-500 hover:text-white transition-colors"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
@@ -112,11 +114,11 @@ const AdminLayout = () => {
         {/* Sidebar - Mobile */}
         {isSidebarOpen && (
           <div className="md:hidden fixed inset-0 z-50">
-            <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setIsSidebarOpen(false)} />
-            <aside className="fixed inset-y-0 left-0 w-64 bg-gray-900 text-white shadow-lg">
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)} />
+            <aside className="fixed inset-y-0 left-0 w-64 bg-gray-950 text-white shadow-2xl">
               <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
-                  <span className="font-semibold text-white">Menu</span>
+                <div className="flex items-center justify-between px-4 py-4 border-b border-gray-900">
+                  <span className="font-black text-white tracking-tight uppercase">Menu</span>
                   <button
                     onClick={() => setIsSidebarOpen(false)}
                     className="p-2 rounded-md text-gray-400 hover:bg-gray-800"
@@ -124,16 +126,16 @@ const AdminLayout = () => {
                     <X className="h-6 w-6" />
                   </button>
                 </div>
-                <nav className="flex-1 px-4 py-6 space-y-1">
+                <nav className="flex-1 px-4 py-6 space-y-2">
                   {navigation.map((item) => (
                     <Link
                       key={item.name}
                       to={item.href}
                       onClick={() => setIsSidebarOpen(false)}
-                      className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      className={`flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-bold transition-colors ${
                         location.pathname.startsWith(item.href)
-                          ? 'bg-blue-600 text-white'
-                          : 'text-gray-300 hover:bg-gray-800'
+                          ? 'bg-primary-600 text-white'
+                          : 'text-gray-400 hover:bg-gray-800'
                       }`}
                     >
                       <item.icon className="h-5 w-5" />
@@ -141,13 +143,13 @@ const AdminLayout = () => {
                     </Link>
                   ))}
                 </nav>
-                <div className="p-4 border-t border-gray-800">
+                <div className="p-4 border-t border-gray-900">
                   <button
                     onClick={() => {
                       handleLogout()
                       setIsSidebarOpen(false)
                     }}
-                    className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-800"
+                    className="flex items-center space-x-2 w-full px-3 py-3 rounded-lg text-sm font-bold text-gray-400 hover:bg-red-500 hover:text-white"
                   >
                     <LogOut className="h-4 w-4" />
                     <span>Logout</span>
@@ -161,19 +163,19 @@ const AdminLayout = () => {
         {/* Main Content */}
         <main className="flex-1 md:ml-64">
           {/* Desktop Header */}
-          <header className="hidden md:flex items-center justify-end px-6 py-4 bg-white border-b border-gray-200">
+          <header className="hidden md:flex items-center justify-end px-6 py-4 bg-white border-b border-gray-200 shadow-sm">
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-3">
-                <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+              <div className="flex items-center space-x-3 p-2 bg-gray-100 rounded-xl border border-gray-200">
+                <div className="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center overflow-hidden shadow-sm">
                   {user?.profileImage ? (
                     <img src={user.profileImage} alt="Profile" className="h-8 w-8 rounded-full object-cover" />
                   ) : (
-                    <User className="h-4 w-4 text-blue-600" />
+                    <User className="h-4 w-4 text-white" />
                   )}
                 </div>
-                <div className="text-sm">
-                  <p className="font-medium text-gray-900">{user?.firstName} {user?.lastName}</p>
-                  <p className="text-xs text-gray-500">Super Admin</p>
+                <div className="text-sm pr-2">
+                  <p className="font-bold text-gray-900">{user?.firstName} {user?.lastName}</p>
+                  <p className="text-xs text-gray-500 font-medium">Super Admin</p>
                 </div>
               </div>
             </div>

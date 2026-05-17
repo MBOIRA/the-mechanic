@@ -11,13 +11,15 @@ import AccountVerification from './pages/AccountVerification'
 import InquiriesPage from './pages/InquiriesPage'
 import TechnicalProblemsPage from './pages/TechnicalProblemsPage'
 
+// Components
+import AppRatingPopup from './components/AppRatingPopup'
+
 // Client Pages
 import ClientDashboard from './pages/Client/ClientDashboard'
 import ClientGetMechanic from './pages/Client/ClientGetMechanic'
 import ClientProfile from './pages/Client/ClientProfile'
 import ClientHistory from './pages/Client/ClientHistory'
 import BookingForm from './pages/Client/BookingForm'
-import BookingConfirmation from './pages/Client/BookingConfirmation'
 import ClientBookings from './pages/Client/ClientBookings'
 import BookingDetails from './pages/Client/BookingDetails'
 import EmergencyBooking from './pages/Client/EmergencyBooking'
@@ -58,61 +60,64 @@ function App() {
   }
 
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<PublicLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path="mechanics" element={<MechanicsPage />} />
-        <Route path="create-account" element={<CreateAccountPage />} />
-        <Route path="verify-account" element={<AccountVerification />} />
-        <Route path="emergency" element={<EmergencyBooking />} />
-        <Route path="inquiries" element={<InquiriesPage />} />
-        <Route path="technical-problems" element={<TechnicalProblemsPage />} />
-        <Route path="emergency-mechanics" element={<EmergencyMechanics />} />
-      </Route>
+    <>
+      <AppRatingPopup />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<PublicLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="mechanics" element={<MechanicsPage />} />
+          <Route path="create-account" element={<CreateAccountPage />} />
+          <Route path="verify-account" element={<AccountVerification />} />
+          <Route path="emergency" element={<EmergencyBooking />} />
+          <Route path="inquiries" element={<InquiriesPage />} />
+          <Route path="technical-problems" element={<TechnicalProblemsPage />} />
+          <Route path="emergency-mechanics" element={<EmergencyMechanics />} />
+          <Route path="book/:mechanicId" element={<BookingForm />} />
+        </Route>
 
-      {/* Client Routes */}
-      <Route path="/client" element={isClient ? <ClientLayout /> : <Navigate to="/create-account" />}>
-        <Route index element={<Navigate to="/client/dashboard" />} />
-        <Route path="dashboard" element={<ClientDashboard />} />
-        <Route path="get-mechanic" element={<ClientGetMechanic />} />
-        <Route path="profile" element={<ClientProfile />} />
-        <Route path="history" element={<ClientHistory />} />
-        <Route path="bookings" element={<ClientBookings />} />
-        <Route path="bookings/:bookingId" element={<BookingDetails />} />
-        <Route path="notifications" element={<ClientNotifications />} />
-        <Route path="book/:mechanicId" element={<BookingForm />} />
-        <Route path="emergency" element={<EmergencyBooking />} />
-        <Route path="emergency-mechanics" element={<EmergencyMechanics />} />
-      </Route>
+        {/* Client Routes */}
+        <Route path="/client" element={isClient ? <ClientLayout /> : <Navigate to="/create-account" />}>
+          <Route index element={<Navigate to="/client/dashboard" />} />
+          <Route path="dashboard" element={<ClientDashboard />} />
+          <Route path="get-mechanic" element={<ClientGetMechanic />} />
+          <Route path="profile" element={<ClientProfile />} />
+          <Route path="history" element={<ClientHistory />} />
+          <Route path="bookings" element={<ClientBookings />} />
+          <Route path="bookings/:bookingId" element={<BookingDetails />} />
+          <Route path="notifications" element={<ClientNotifications />} />
+          <Route path="emergency" element={<EmergencyBooking />} />
+          <Route path="emergency-mechanics" element={<EmergencyMechanics />} />
+        </Route>
 
-      {/* Mechanic Routes */}
-      <Route path="/mechanic" element={isMechanic ? <MechanicLayout /> : <Navigate to="/create-account" />}>
-        <Route index element={<Navigate to="/mechanic/dashboard" />} />
-        <Route path="dashboard" element={<MechanicDashboard />} />
-        <Route path="bookings" element={<MechanicBookings />} />
-        <Route path="history" element={<MechanicHistory />} />
-        <Route path="bookings/:bookingId" element={<MechanicBookingDetails />} />
-        <Route path="bookings/:bookingId/create-invoice" element={<CreateInvoice />} />
-        <Route path="notifications" element={<MechanicNotifications />} />
-        <Route path="profile" element={<MechanicProfile />} />
-        <Route path="statistics" element={<MechanicStatistics />} />
-        <Route path="subscription" element={<MechanicSubscription />} />
-        <Route path="payment" element={<MechanicPayment />} />
-      </Route>
+        {/* Mechanic Routes */}
+        <Route path="/mechanic" element={isMechanic ? <MechanicLayout /> : <Navigate to="/create-account" />}>
+          <Route index element={<Navigate to="/mechanic/dashboard" />} />
+          <Route path="dashboard" element={<MechanicDashboard />} />
+          <Route path="bookings" element={<MechanicBookings />} />
+          <Route path="history" element={<MechanicHistory />} />
+          <Route path="bookings/:bookingId" element={<MechanicBookingDetails />} />
+          <Route path="bookings/:bookingId/create-invoice" element={<CreateInvoice />} />
+          <Route path="notifications" element={<MechanicNotifications />} />
+          <Route path="profile" element={<MechanicProfile />} />
+          <Route path="statistics" element={<MechanicStatistics />} />
+          <Route path="subscription" element={<MechanicSubscription />} />
+          <Route path="payment" element={<MechanicPayment />} />
+        </Route>
 
-      {/* Admin Routes */}
-      <Route path="/admin" element={isAdmin ? <AdminLayout /> : <Navigate to="/create-account" />}>
-        <Route index element={<Navigate to="/admin/dashboard" />} />
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="payments" element={<AdminPayments />} />
-        <Route path="support" element={<AdminSupport />} />
-        <Route path="profile" element={<AdminProfile />} />
-      </Route>
+        {/* Admin Routes */}
+        <Route path="/admin" element={isAdmin ? <AdminLayout /> : <Navigate to="/create-account" />}>
+          <Route index element={<Navigate to="/admin/dashboard" />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="payments" element={<AdminPayments />} />
+          <Route path="support" element={<AdminSupport />} />
+          <Route path="profile" element={<AdminProfile />} />
+        </Route>
 
-      {/* Catch all */}
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+        {/* Catch all */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </>
   )
 }
 

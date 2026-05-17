@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 
 const BookingForm = () => {
   const { mechanicId } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
   const { user } = useAuth()
+  const [autoSubmitAttempted, setAutoSubmitAttempted] = useState(false)
   const [mechanic, setMechanic] = useState(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
@@ -36,6 +38,30 @@ const BookingForm = () => {
     fetchMechanic()
   }, [mechanicId])
 
+  useEffect(() => {
+    if (location.state?.autoSubmit && user && !autoSubmitAttempted) {
+      const pendingDataStr = localStorage.getItem('pendingBooking')
+      if (pendingDataStr) {
+        try {
+          const { requestBody, vehicleImage: savedImage } = JSON.parse(pendingDataStr)
+          
+          if (savedImage && requestBody.images && requestBody.images[0]) {
+            requestBody.images[0].uploadedBy = user.id
+          }
+          
+          if (savedImage) {
+            setVehicleImage(savedImage)
+          }
+          
+          submitBooking(requestBody)
+        } catch (e) {
+          console.error('Error parsing pending booking:', e)
+        }
+      }
+      setAutoSubmitAttempted(true)
+    }
+  }, [location.state, user, autoSubmitAttempted])
+
   const fetchMechanic = async () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/mechanics/${mechanicId}`)
@@ -47,7 +73,7 @@ const BookingForm = () => {
             ...prev,
             service: data.mechanic.specialization[0],
             pricing: {
-              estimatedCost: data.mechanic.pricing?.hourlyRate || 0
+              estimatedCost: data.mechanic.pricing?.diagnosticFee || 0
             }
           }))
         }
@@ -95,7 +121,7 @@ const BookingForm = () => {
       ...prev,
       service: specialization,
       pricing: {
-        estimatedCost: mechanic.pricing?.hourlyRate || 0
+        estimatedCost: mechanic.pricing?.diagnosticFee || 0
       }
     }))
   }
@@ -150,36 +176,9 @@ const BookingForm = () => {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    if (!validateForm()) {
-      return
-    }
-
+  const submitBooking = async (requestBody) => {
     setSubmitting(true)
     try {
-      const requestBody = {
-        mechanic: mechanicId,
-        service: formData.service,
-        vehicle: formData.vehicle,
-        scheduledDate: formData.scheduledDate,
-        scheduledTime: formData.scheduledTime,
-        estimatedDuration: formData.estimatedDuration,
-        location: formData.location,
-        description: formData.description,
-        pricing: formData.pricing
-      }
-
-      // Add vehicle image if provided
-      if (vehicleImage) {
-        requestBody.images = [{
-          url: vehicleImage,
-          description: 'Vehicle image',
-          uploadedBy: user.id
-        }]
-      }
-
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings`, {
         method: 'POST',
         headers: {
@@ -192,6 +191,9 @@ const BookingForm = () => {
       const data = await response.json()
 
       if (response.ok) {
+        localStorage.removeItem('pendingBooking')
+        localStorage.removeItem('pendingBookingMechanic')
+        window.dispatchEvent(new CustomEvent('show-rating-popup'))
         navigate(`/client/bookings/${data.booking._id}`)
       } else {
         setErrors({ general: data.message || 'Failed to create booking' })
@@ -202,6 +204,44 @@ const BookingForm = () => {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!validateForm()) {
+      return
+    }
+
+    const requestBody = {
+      mechanic: mechanicId,
+      service: formData.service,
+      vehicle: formData.vehicle,
+      scheduledDate: formData.scheduledDate,
+      scheduledTime: formData.scheduledTime,
+      estimatedDuration: formData.estimatedDuration,
+      location: formData.location,
+      description: formData.description,
+      pricing: formData.pricing
+    }
+
+    // Add vehicle image if provided
+    if (vehicleImage) {
+      requestBody.images = [{
+        url: vehicleImage,
+        description: 'Vehicle image',
+        uploadedBy: user?.id || null
+      }]
+    }
+
+    if (!user) {
+      localStorage.setItem('pendingBooking', JSON.stringify({ requestBody, vehicleImage }))
+      localStorage.setItem('pendingBookingMechanic', mechanicId)
+      navigate('/create-account', { state: { fromBooking: true } })
+      return
+    }
+
+    await submitBooking(requestBody)
   }
 
   if (loading) {
@@ -490,10 +530,10 @@ const BookingForm = () => {
                 )}
               </div>
 
-              {/* Estimated Cost */}
+              {/* Diagnostic Cost */}
               <div className="border-t pt-6 bg-gray-50 p-4 rounded-lg">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-700">Estimated Cost:</span>
+                  <span className="text-gray-700">Diagnostic Cost:</span>
                   <span className="text-2xl font-bold text-gray-900">
                     ${formData.pricing.estimatedCost}
                   </span>

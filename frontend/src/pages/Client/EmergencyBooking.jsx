@@ -242,6 +242,7 @@ const EmergencyBooking = () => {
 
       setAssignedMechanic(data.mechanic)
       setSuccess(true)
+      window.dispatchEvent(new CustomEvent('show-rating-popup'))
       setTimeout(() => {
         navigate('/client/bookings')
       }, 5000)

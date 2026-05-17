@@ -9,50 +9,53 @@ import {
   Clock, 
   ArrowRight,
   CheckCircle,
-  Users
+  Users,
+  Settings,
+  Car,
+  AlertTriangle
 } from 'lucide-react'
 
 const HomePage = () => {
   const features = [
     {
-      icon: <Wrench className="h-8 w-8 text-primary-600" />,
+      icon: <Wrench className="h-8 w-8 text-primary-500" />,
       title: 'Expert Mechanics',
       description: 'Connect with certified and experienced mechanics for all your vehicle needs.'
     },
     {
-      icon: <Clock className="h-8 w-8 text-primary-600" />,
+      icon: <Clock className="h-8 w-8 text-primary-500" />,
       title: '24/7 Emergency Service',
       description: 'Get roadside assistance anytime, anywhere with our emergency support network.'
     },
     {
-      icon: <Shield className="h-8 w-8 text-primary-600" />,
+      icon: <Shield className="h-8 w-8 text-primary-500" />,
       title: 'Verified Professionals',
       description: 'All mechanics are background-checked and verified for your safety and peace of mind.'
     },
     {
-      icon: <MapPin className="h-8 w-8 text-primary-600" />,
+      icon: <MapPin className="h-8 w-8 text-primary-500" />,
       title: 'Location-Based Search',
       description: 'Find mechanics near you with our intelligent location matching system.'
     },
     {
-      icon: <Star className="h-8 w-8 text-primary-600" />,
+      icon: <Star className="h-8 w-8 text-primary-500" />,
       title: 'Ratings & Reviews',
       description: 'Make informed decisions with genuine reviews from real customers.'
     },
     {
-      icon: <Phone className="h-8 w-8 text-primary-600" />,
+      icon: <Phone className="h-8 w-8 text-primary-500" />,
       title: 'Easy Booking',
       description: 'Book services instantly with our simple and intuitive booking system.'
     }
   ]
 
   const services = [
-    { name: 'Engine Repair', description: 'Complete engine diagnostics and repair services' },
-    { name: 'Brake Service', description: 'Brake inspection, repair, and replacement' },
-    { name: 'Oil Change', description: 'Quick and reliable oil change services' },
-    { name: 'Transmission', description: 'Transmission repair and maintenance' },
-    { name: 'AC & Heating', description: 'Climate control system repair and service' },
-    { name: 'Electrical', description: 'Electrical system diagnostics and repair' }
+    { name: 'Engine Diagnostics', description: 'Comprehensive scanning and troubleshooting for engine faults' },
+    { name: 'Brake Repair', description: 'Pad replacement, rotor resurfacing, and brake fluid checks' },
+    { name: 'Routine Maintenance', description: 'Oil changes, filter replacements, and fluid top-ups' },
+    { name: 'Transmission Services', description: 'Fluid flushes, diagnostics, and complete overhauls' },
+    { name: 'AC & Climate Control', description: 'Recharge, leak detection, and compressor repair' },
+    { name: 'Electrical Systems', description: 'Battery testing, alternator repair, and wiring fixes' }
   ]
 
   const stats = [
@@ -63,52 +66,75 @@ const HomePage = () => {
   ]
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 relative">
-          <div className="text-center">
-            <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-2xl bg-white/20 backdrop-blur-sm mb-8 shadow-2xl">
-              <Wrench className="h-10 w-10 text-white" />
+      <section className="relative overflow-hidden bg-gray-900 text-white min-h-[90vh] flex items-center">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=1920&q=80" 
+            alt="Mechanic working on car engine" 
+            className="w-full h-full object-cover opacity-40 mix-blend-overlay"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/40"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-20">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-primary-500/20 text-primary-400 border border-primary-500/30 mb-8 backdrop-blur-sm">
+              <Settings className="h-4 w-4 animate-spin-slow" />
+              <span className="text-sm font-semibold tracking-wider uppercase">The Ultimate Mechanics Hub</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-              Your Trusted Vehicle Service Platform
+            
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+              Professional Auto Care <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">
+                At Your Fingertips
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
-              Connect with certified mechanics for roadside assistance and garage services
+            
+            <p className="text-xl md:text-2xl mb-10 text-gray-300 font-light">
+              Connect instantly with certified mechanics for expert garage services and 24/7 roadside assistance.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            
+            <div className="flex flex-col sm:flex-row gap-5">
               <Link
                 to="/mechanics"
-                className="px-10 py-4 bg-white text-blue-600 rounded-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
+                className="px-8 py-4 bg-primary-600 text-white rounded-lg font-bold shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:bg-primary-500 transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center text-lg"
               >
-                Find Mechanics
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <Car className="mr-2 h-5 w-5" />
+                Find a Mechanic
               </Link>
               <Link
                 to="/emergency"
-                className="px-10 py-4 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
+                className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-lg font-bold hover:bg-white/20 transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center text-lg group"
               >
+                <AlertTriangle className="mr-2 h-5 w-5 text-red-500 group-hover:animate-pulse" />
                 Emergency Help
-                <Phone className="ml-2 h-5 w-5" />
               </Link>
             </div>
           </div>
         </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute right-0 bottom-0 w-1/3 h-full opacity-10 pointer-events-none hidden lg:block">
+          <svg viewBox="0 0 100 100" className="w-full h-full fill-current text-primary-500" preserveAspectRatio="none">
+            <polygon points="100,0 100,100 0,100" />
+          </svg>
+        </div>
       </section>
 
       {/* Stats Section */}
-      <section className="bg-white py-16 border-b border-gray-100 relative">
+      <section className="bg-gray-900 border-t border-gray-800 relative z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-12">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+              <div key={index} className="text-center p-6 border-r border-gray-800 last:border-0">
+                <div className="text-4xl md:text-5xl font-black text-primary-500 mb-2 font-mono">
                   {stat.number}
                 </div>
-                <div className="text-gray-700 font-semibold">{stat.label}</div>
+                <div className="text-gray-400 font-medium uppercase tracking-wider text-sm">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -116,93 +142,118 @@ const HomePage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <section className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-900 to-indigo-900 bg-clip-text text-transparent mb-4">
-              Why Choose Mechanics Hub?
-            </h2>
+            <h2 className="text-sm font-bold text-primary-600 uppercase tracking-widest mb-2">Why Choose Us</h2>
+            <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+              Driven by Excellence
+            </h3>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We make vehicle maintenance simple, reliable, and convenient
+              We provide a seamless experience to keep your vehicle running smoothly.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
-                <div className="mb-4 p-3 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl inline-block">
-                  {React.cloneElement(feature.icon, { className: 'h-8 w-8 text-blue-600' })}
+              <div key={index} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-100 transform hover:-translate-y-1 transition-all duration-300 group">
+                <div className="mb-6 p-4 bg-gray-50 rounded-2xl inline-block group-hover:bg-primary-50 transition-colors duration-300">
+                  {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <h4 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
                   {feature.title}
-                </h3>
-                <p className="text-gray-600">{feature.description}</p>
+                </h4>
+                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-900 to-indigo-900 bg-clip-text text-transparent mb-4">
-              Our Services
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive vehicle services to keep you on the road
-            </p>
+      {/* Services Section with dark theme */}
+      <section className="py-24 bg-gray-900 text-white relative overflow-hidden">
+        {/* Abstract background pattern */}
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(#f59e0b 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div className="max-w-2xl">
+              <h2 className="text-sm font-bold text-primary-500 uppercase tracking-widest mb-2">Capabilities</h2>
+              <h3 className="text-4xl md:text-5xl font-extrabold mb-4">
+                Comprehensive Auto Services
+              </h3>
+              <p className="text-xl text-gray-400">
+                From routine maintenance to complex engine diagnostics, our network of mechanics has you covered.
+              </p>
+            </div>
+            <Link
+              to="/mechanics"
+              className="hidden md:inline-flex px-6 py-3 border-2 border-primary-500 text-primary-400 rounded-lg font-bold hover:bg-primary-500 hover:text-white transition-all duration-300 items-center"
+            >
+              View All Mechanics
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => (
-              <div key={index} className="border-2 border-gray-100 rounded-2xl p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
-                <div className="flex items-start space-x-3">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-green-400 to-emerald-500 flex-shrink-0">
-                    <CheckCircle className="h-5 w-5 text-white" />
+              <div key={index} className="bg-gray-800 border border-gray-700 rounded-2xl p-8 hover:border-primary-500 transition-all duration-300 group">
+                <div className="flex items-start">
+                  <div className="mt-1">
+                    <CheckCircle className="h-6 w-6 text-primary-500" />
                   </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  <div className="ml-4">
+                    <h4 className="text-xl font-bold text-white mb-2 group-hover:text-primary-400 transition-colors">
                       {service.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm">{service.description}</p>
+                    </h4>
+                    <p className="text-gray-400">{service.description}</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
           
-          <div className="text-center mt-12">
+          <div className="mt-10 text-center md:hidden">
             <Link
               to="/mechanics"
-              className="px-10 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+              className="inline-flex px-6 py-3 border-2 border-primary-500 text-primary-400 rounded-lg font-bold hover:bg-primary-500 hover:text-white transition-all duration-300 items-center w-full justify-center"
             >
-              View All Services
+              View All Mechanics
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-2xl bg-white/20 backdrop-blur-sm mb-6 shadow-xl">
-            <Users className="h-8 w-8 text-white" />
+      <section className="py-24 relative overflow-hidden bg-primary-600 text-white">
+        {/* Mechanic texture/pattern overlay */}
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)', backgroundPosition: '0 0, 10px 10px', backgroundSize: '20px 20px' }}></div>
+        
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-2xl bg-white/10 backdrop-blur-md mb-8 border border-white/20 shadow-2xl">
+            <Users className="h-10 w-10 text-white" />
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Ready to Get Started?
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
+            Ready to Join the Hub?
           </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of satisfied customers who trust Mechanics Hub for their vehicle needs
+          <p className="text-xl text-primary-100 mb-10 max-w-2xl mx-auto font-medium">
+            Whether you need a reliable mechanic or you're a professional looking for clients, Mechanics Hub is your ultimate platform.
           </p>
-          <Link
-            to="/create-account"
-            className="px-10 py-4 bg-white text-blue-600 rounded-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
-          >
-            Create Free Account
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/create-account"
+              className="px-10 py-4 bg-gray-900 text-white rounded-xl font-bold shadow-xl hover:bg-black transform hover:-translate-y-1 transition-all duration-300"
+            >
+              Create Free Account
+            </Link>
+            <Link
+              to="/mechanics"
+              className="px-10 py-4 bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-xl font-bold hover:bg-white/30 transition-all duration-300"
+            >
+              Browse Services
+            </Link>
+          </div>
         </div>
       </section>
     </div>

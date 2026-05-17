@@ -108,17 +108,12 @@ const MechanicsPage = () => {
   }
 
   const handleBookService = (mechanicId) => {
-    if (!isAuthenticated) {
-      navigate('/create-account')
-      return
-    }
-    
-    if (user?.role !== 'client') {
+    if (isAuthenticated && user?.role !== 'client') {
       alert('Only clients can book services')
       return
     }
     
-    navigate(`/client/book/${mechanicId}`)
+    navigate(`/book/${mechanicId}`)
   }
 
   if (loading) {
@@ -138,13 +133,23 @@ const MechanicsPage = () => {
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Find Qualified Mechanics
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Connect with certified mechanics in your area for reliable vehicle service
-          </p>
+        <div className="relative bg-gray-900 rounded-3xl overflow-hidden mb-12 text-center py-20 px-4 shadow-2xl">
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=1920&q=80" 
+              alt="Mechanic tools" 
+              className="w-full h-full object-cover opacity-30 mix-blend-overlay"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"></div>
+          </div>
+          <div className="relative z-10">
+            <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
+              Find Qualified <span className="text-primary-500">Mechanics</span>
+            </h1>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto font-medium">
+              Connect with certified professionals in the Mechanics Hub network
+            </p>
+          </div>
         </div>
 
         {/* Filters */}

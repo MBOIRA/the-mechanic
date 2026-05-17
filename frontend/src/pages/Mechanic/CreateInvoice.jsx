@@ -125,6 +125,7 @@ const CreateInvoice = () => {
           })
         }
         setSuccess(true)
+        window.dispatchEvent(new CustomEvent('show-rating-popup'))
       } else {
         setError(data.message || 'Failed to create invoice')
       }
