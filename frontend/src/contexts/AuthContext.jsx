@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react'
+import API_BASE_URL from '../config/api'
 
 const AuthContext = createContext()
 
@@ -77,9 +78,9 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'SET_LOADING', payload: false })
   }, [])
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+  const API_URL = API_BASE_URL
 
-const login = async (email, password, role = null) => {
+  const login = async (email, password, role = null) => {
     try {
       dispatch({ type: 'LOGIN_START' })
       
