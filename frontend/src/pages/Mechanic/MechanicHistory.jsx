@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import API_BASE_URL from '../../config/api'
 import { 
   Calendar, 
   AlertCircle,
@@ -25,7 +26,7 @@ const MechanicHistory = () => {
   const fetchBookings = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings/mechanic/${user.id}?status=${filter}`, {
+      const response = await fetch(`${API_BASE_URL}/bookings/mechanic/${user.id}?status=${filter}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -62,13 +63,12 @@ const MechanicHistory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Booking History</h1>
-          <p className="text-gray-600 mt-2">View your completed and cancelled service bookings</p>
-        </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Booking History</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-1">View your completed and cancelled service bookings</p>
+      </div>
 
         {/* Filters */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
@@ -198,7 +198,6 @@ const MechanicHistory = () => {
             ))}
           </div>
         )}
-      </div>
     </div>
   )
 }

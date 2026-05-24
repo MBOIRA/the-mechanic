@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import API_BASE_URL from '../../config/api'
 import { 
   Calendar, 
   Star, 
@@ -28,7 +29,7 @@ const ClientBookings = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings?status=${filter}`, {
+      const response = await fetch(`${API_BASE_URL}/bookings?status=${filter}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

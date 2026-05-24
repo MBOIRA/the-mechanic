@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import axios from 'axios'
+import API_BASE_URL from '../../config/api'
 import { 
   Bell, 
   Calendar, 
@@ -16,8 +17,6 @@ import {
   Star,
   ChevronRight
 } from 'lucide-react'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
 const ClientNotifications = () => {
   const navigate = useNavigate()
@@ -140,13 +139,12 @@ const ClientNotifications = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Notifications</h1>
-          <p className="text-gray-600 mt-2">Stay updated with your booking status and service updates</p>
-        </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Notifications</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-1">Stay updated with your booking status and service updates</p>
+      </div>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-8">
@@ -284,7 +282,6 @@ const ClientNotifications = () => {
             </button>
           </div>
         )}
-      </div>
     </div>
   )
 }

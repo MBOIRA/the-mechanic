@@ -206,7 +206,7 @@ const MechanicLayout = () => {
           </header>
 
           {/* Page Content */}
-          <div className="p-8">
+          <div className="p-4 sm:p-6 md:p-8">
             <Outlet />
           </div>
         </main>

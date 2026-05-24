@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { bookingsAPI } from '../../services/api'
+import API_BASE_URL from '../../config/api'
 import { 
   Calendar, 
   Star, 
@@ -24,7 +24,7 @@ const ClientHistory = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings?status=${filterStatus}`, {
+      const response = await fetch(`${API_BASE_URL}/bookings?status=${filterStatus}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -75,13 +75,12 @@ const ClientHistory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Service History</h1>
-          <p className="text-gray-600 mt-2">View your past and current vehicle service bookings</p>
-        </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Service History</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-1">View your past and current vehicle service bookings</p>
+      </div>
 
         {/* Filters */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
@@ -235,14 +234,13 @@ const ClientHistory = () => {
                 : `No ${filterStatus.replace('_', ' ')} bookings found.`}
             </p>
             <button
-              onClick={() => window.location.href = '/client/get-mechanic'}
+              onClick={() => navigate('/client/get-mechanic')}
               className="btn-primary"
             >
               Book a Service
             </button>
           </div>
         )}
-      </div>
     </div>
   )
 }

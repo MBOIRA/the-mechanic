@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { 
   Calendar, 
@@ -37,6 +37,7 @@ import {
 } from 'lucide-react'
 
 const MechanicDashboard = () => {
+  const navigate = useNavigate()
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [bookings, setBookings] = useState([])
@@ -170,76 +171,28 @@ const MechanicDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-lg shadow-lg border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center">
-              <div className="flex items-center justify-center h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg mr-4">
-                <Wrench className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-900 to-indigo-900 bg-clip-text text-transparent">Mechanic Dashboard</h1>
-                <p className="text-sm text-gray-600">Welcome back, {user?.firstName || 'Mechanic'}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search bookings..."
-                  className="pl-11 pr-4 py-2.5 w-72 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 shadow-sm"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              
-              {/* Emergency Toggle */}
-              <button
-                onClick={handleToggleEmergency}
-                className={`flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 border ${
-                  emergencyAvailable 
-                    ? 'bg-gradient-to-r from-red-500 to-rose-500 text-white border-transparent shadow-lg hover:shadow-xl transform hover:scale-105' 
-                    : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border-gray-200 hover:from-gray-200 hover:to-gray-300'
-                }`}
-              >
-                <Zap className={`h-4 w-4 mr-2 ${emergencyAvailable ? 'text-white fill-current' : 'text-gray-500'}`} />
-                {emergencyAvailable ? 'Emergency: ON' : 'Emergency: OFF'}
-              </button>
-
-              {/* Notifications */}
-              <button
-                onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2.5 text-gray-600 hover:text-gray-900 hover:bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl transition-all duration-200"
-              >
-                <Bell className="h-5 w-5" />
-                {stats.pendingBookings > 0 && (
-                  <span className="absolute top-1 right-1 h-2.5 w-2.5 bg-red-500 rounded-full shadow-sm"></span>
-                )}
-              </button>
-              
-              {/* Profile */}
-              <div className="flex items-center space-x-3 p-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
-                <div className="text-right">
-                  <p className="text-sm font-semibold text-gray-900">{user?.firstName || 'Mechanic'} {user?.lastName || 'User'}</p>
-                  <p className="text-xs text-gray-600">Mechanic</p>
-                </div>
-                <div className="h-10 w-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center shadow-md">
-                  <span className="text-white text-sm font-bold">
-                    {user?.firstName?.[0] || 'M'}{user?.lastName?.[0] || 'U'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="space-y-8">
+      {/* Welcome Section */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-blue-900 to-indigo-900 bg-clip-text text-transparent">Mechanic Dashboard</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Welcome back, <span className="font-bold text-blue-600">{user?.firstName || 'Mechanic'}</span></p>
         </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div>
+          {/* Emergency Toggle */}
+          <button
+            onClick={handleToggleEmergency}
+            className={`flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 border ${
+              emergencyAvailable 
+                ? 'bg-gradient-to-r from-red-500 to-rose-500 text-white border-transparent shadow-lg hover:shadow-xl transform hover:scale-105' 
+                : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border-gray-200 hover:from-gray-200 hover:to-gray-300'
+            }`}
+          >
+            <Zap className={`h-4 w-4 mr-2 ${emergencyAvailable ? 'text-white fill-current' : 'text-gray-500'}`} />
+            {emergencyAvailable ? 'Emergency: ON' : 'Emergency: OFF'}
+          </button>
+        </div>
+      </div>
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
@@ -353,11 +306,23 @@ const MechanicDashboard = () => {
         {/* Recent Bookings */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100">
           <div className="p-6 border-b border-gray-100">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-900 to-indigo-900 bg-clip-text text-transparent">Recent Bookings</h2>
-              <div className="flex items-center space-x-3">
+              <div className="flex flex-wrap items-center gap-3">
+                {/* Search Input */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search bookings..."
+                    className="pl-10 pr-4 py-2 w-full sm:w-48 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm bg-white"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+
                 <select
-                  className="px-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className="px-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white shadow-sm transition-all duration-200"
                   value={selectedFilter}
                   onChange={(e) => setSelectedFilter(e.target.value)}
                 >
@@ -371,7 +336,7 @@ const MechanicDashboard = () => {
                 
                 <Link
                   to="/mechanic/bookings"
-                  className="text-blue-600 hover:text-blue-700 text-sm font-semibold flex items-center"
+                  className="text-blue-600 hover:text-blue-700 text-sm font-semibold flex items-center ml-2"
                 >
                   View All
                   <ChevronRight className="h-4 w-4 ml-1" />
@@ -380,86 +345,137 @@ const MechanicDashboard = () => {
             </div>
           </div>
           
-          <div className="overflow-x-auto">
+          <div>
             {filteredBookings.length > 0 ? (
-              <table className="min-w-full divide-y divide-gray-100">
-                <thead className="bg-gradient-to-r from-gray-50 to-blue-50">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                      Client
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                      Service
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                      Vehicle
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                      Schedule
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-100">
-                  {filteredBookings.map((booking) => (
-                    <tr key={booking._id} className="hover:bg-gradient-to-r from-blue-50 to-indigo-50 transition-colors duration-200">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="h-10 w-10 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mr-3 shadow-sm">
-                            <span className="text-sm font-bold text-blue-600">
-                              {booking.client?.firstName?.[0]}{booking.client?.lastName?.[0]}
-                            </span>
-                          </div>
-                          <div>
-                            <div className="text-sm font-semibold text-gray-900">
-                              {booking.client?.firstName} {booking.client?.lastName}
+              <>
+                {/* Desktop Table View */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-100">
+                    <thead className="bg-gradient-to-r from-gray-50 to-blue-50">
+                      <tr>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                          Client
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                          Service
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                          Vehicle
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                          Schedule
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-100">
+                      {filteredBookings.map((booking) => (
+                        <tr key={booking._id} className="hover:bg-gradient-to-r from-blue-50 to-indigo-50 transition-colors duration-200">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="h-10 w-10 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mr-3 shadow-sm">
+                                <span className="text-sm font-bold text-blue-600">
+                                  {booking.client?.firstName?.[0]}{booking.client?.lastName?.[0]}
+                                </span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-semibold text-gray-900">
+                                  {booking.client?.firstName} {booking.client?.lastName}
+                                </div>
+                                <div className="text-sm text-gray-600">{booking.client?.phone}</div>
+                              </div>
                             </div>
-                            <div className="text-sm text-gray-600">{booking.client?.phone}</div>
-                          </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-semibold text-gray-900">{booking.service || 'Service'}</div>
+                            <div className="text-sm text-gray-600">${booking.pricing?.estimatedCost || 0}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-semibold text-gray-900">
+                              {booking.vehicle?.make} {booking.vehicle?.model}
+                            </div>
+                            <div className="text-sm text-gray-600">{booking.vehicle?.year}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-semibold text-gray-900">{formatDate(booking.scheduledDate)}</div>
+                            <div className="text-sm text-gray-600">{formatTime(booking.scheduledTime)}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(booking.status)}`}>
+                              {getStatusIcon(booking.status)}
+                              <span className="ml-1">{booking.status.replace('_', ' ')}</span>
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <div className="flex items-center space-x-2">
+                              <button onClick={() => navigate(`/mechanic/bookings/${booking._id}`)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                                <Eye className="h-4 w-4" />
+                              </button>
+                              <button onClick={() => navigate(`/mechanic/bookings/${booking._id}`)} className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
+                                <Edit className="h-4 w-4" />
+                              </button>
+                              <button onClick={() => navigate(`/mechanic/bookings/${booking._id}`)} className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
+                                <MessageSquare className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile Cards View */}
+                <div className="block md:hidden divide-y divide-gray-100 bg-white">
+                  {filteredBookings.map((booking) => (
+                    <div 
+                      key={booking._id} 
+                      className="p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                      onClick={() => navigate(`/mechanic/bookings/${booking._id}`)}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h4 className="font-bold text-gray-900 text-base">{booking.service || 'Service'}</h4>
+                          <p className="text-sm text-gray-600 font-semibold">{booking.client?.firstName} {booking.client?.lastName}</p>
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-semibold text-gray-900">{booking.service || 'Service'}</div>
-                        <div className="text-sm text-gray-600">${booking.pricing?.estimatedCost || 0}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-semibold text-gray-900">
-                          {booking.vehicle?.make} {booking.vehicle?.model}
-                        </div>
-                        <div className="text-sm text-gray-600">{booking.vehicle?.year}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-semibold text-gray-900">{formatDate(booking.scheduledDate)}</div>
-                        <div className="text-sm text-gray-600">{formatTime(booking.scheduledTime)}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(booking.status)}`}>
-                          {getStatusIcon(booking.status)}
-                          <span className="ml-1">{booking.status.replace('_', ' ')}</span>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${getStatusColor(booking.status)}`}>
+                          {booking.status.replace('_', ' ')}
                         </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div className="flex items-center space-x-2">
-                          <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                            <Eye className="h-4 w-4" />
-                          </button>
-                          <button className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
-                            <Edit className="h-4 w-4" />
-                          </button>
-                          <button className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
-                            <MessageSquare className="h-4 w-4" />
-                          </button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-xs text-gray-600 mt-3 pt-3 border-t border-gray-100">
+                        <div>
+                          <span className="font-semibold text-gray-500">Vehicle:</span> {booking.vehicle?.make} {booking.vehicle?.model}
                         </div>
-                      </td>
-                    </tr>
+                        <div>
+                          <span className="font-semibold text-gray-500">Date:</span> {formatDate(booking.scheduledDate)}
+                        </div>
+                        <div>
+                          <span className="font-semibold text-gray-500">Time:</span> {formatTime(booking.scheduledTime)}
+                        </div>
+                        <div>
+                          <span className="font-semibold text-gray-500">Est. Cost:</span> ${booking.pricing?.estimatedCost || 0}
+                        </div>
+                      </div>
+                      <div className="mt-3 flex justify-end space-x-2">
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            navigate(`/mechanic/bookings/${booking._id}`)
+                          }}
+                          className="px-3 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                        >
+                          View Details
+                        </button>
+                      </div>
+                    </div>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </>
             ) : (
               <div className="text-center py-16">
                 <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 mb-4">
@@ -475,7 +491,6 @@ const MechanicDashboard = () => {
             )}
           </div>
         </div>
-      </main>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import API_BASE_URL from '../../config/api'
 import { 
   Calendar, 
   Wrench, 
@@ -64,7 +65,7 @@ const ClientDashboard = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings`, {
+      const response = await fetch(`${API_BASE_URL}/bookings`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -82,7 +83,7 @@ const ClientDashboard = () => {
 
   const fetchMechanics = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/mechanics`)
+      const response = await fetch(`${API_BASE_URL}/mechanics`)
       const data = await response.json()
       if (response.ok) {
         setMechanics(data.mechanics || [])
@@ -94,7 +95,7 @@ const ClientDashboard = () => {
 
   const fetchVehicles = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/vehicles`, {
+      const response = await fetch(`${API_BASE_URL}/vehicles`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -122,7 +123,7 @@ const ClientDashboard = () => {
   const handleAddVehicle = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/vehicles`, {
+      const response = await fetch(`${API_BASE_URL}/vehicles`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +145,7 @@ const ClientDashboard = () => {
   const handleDeleteVehicle = async (id) => {
     if (window.confirm('Are you sure you want to remove this vehicle?')) {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/vehicles/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/vehicles/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -241,58 +242,12 @@ const ClientDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <Car className="h-8 w-8 text-primary-600 mr-3" />
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">Client Dashboard</h1>
-                <p className="text-sm text-gray-500">Welcome back, {user?.firstName || 'Client'}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search bookings..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              
-              {/* Notifications */}
-              <button className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg">
-                <Bell className="h-5 w-5" />
-                {stats.pendingBookings > 0 && (
-                  <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-                )}
-              </button>
-              
-              {/* Profile */}
-              <div className="flex items-center space-x-3">
-                <div className="text-right">
-                  <p className="text-sm font-medium text-gray-900">{user?.firstName || 'Client'} {user?.lastName || 'User'}</p>
-                  <p className="text-xs text-gray-500">Client</p>
-                </div>
-                <div className="h-8 w-8 bg-primary-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-medium">
-                    {user?.firstName?.[0] || 'C'}{user?.lastName?.[0] || 'U'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="space-y-8">
+      {/* Welcome Section */}
+      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900">Client Dashboard</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-1">Welcome back, <span className="font-bold text-primary-600">{user?.firstName || 'Client'}</span></p>
+      </div>
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
@@ -402,11 +357,23 @@ const ClientDashboard = () => {
           {/* Recent Bookings */}
           <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200">
             <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">Recent Bookings</h2>
-                <div className="flex items-center space-x-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <h2 className="text-lg font-bold text-gray-900">Recent Bookings</h2>
+                <div className="flex flex-wrap items-center gap-3">
+                  {/* Search Input */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search bookings..."
+                      className="pl-10 pr-4 py-2 w-full sm:w-48 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-sm"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                  
                   <select
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white shadow-sm"
                     value={selectedFilter}
                     onChange={(e) => setSelectedFilter(e.target.value)}
                   >
@@ -420,7 +387,7 @@ const ClientDashboard = () => {
                   
                   <Link
                     to="/client/bookings"
-                    className="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center"
+                    className="text-primary-600 hover:text-primary-700 text-sm font-bold flex items-center ml-2"
                   >
                     View All
                     <ChevronRight className="h-4 w-4 ml-1" />
@@ -429,71 +396,122 @@ const ClientDashboard = () => {
               </div>
             </div>
             
-            <div className="overflow-x-auto">
+            <div>
               {filteredBookings.length > 0 ? (
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Service
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Mechanic
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Vehicle
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Schedule
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                <>
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Service
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Mechanic
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Vehicle
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Schedule
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {filteredBookings.map((booking) => (
+                          <tr key={booking._id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">{booking.service || 'Service'}</div>
+                              <div className="text-sm text-gray-500">${booking.pricing?.estimatedCost || 0}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">{booking.mechanic?.businessName || booking.mechanic?.firstName + ' ' + booking.mechanic?.lastName || 'Mechanic'}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">
+                                {booking.vehicle?.make} {booking.vehicle?.model}
+                              </div>
+                              <div className="text-sm text-gray-500">{booking.vehicle?.year}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">{formatDate(booking.scheduledDate)}</div>
+                              <div className="text-sm text-gray-500">{formatTime(booking.scheduledTime)}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(booking.status)}`}>
+                                {getStatusIcon(booking.status)}
+                                <span className="ml-1">{booking.status.replace('_', ' ')}</span>
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <div className="flex items-center space-x-2">
+                                <button onClick={() => navigate(`/client/bookings/${booking._id}`)} className="text-primary-600 hover:text-primary-900">
+                                  <Eye className="h-4 w-4" />
+                                </button>
+                                <button onClick={() => navigate(`/client/bookings/${booking._id}`)} className="text-gray-600 hover:text-gray-900">
+                                  <MessageSquare className="h-4 w-4" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile Cards View */}
+                  <div className="block md:hidden divide-y divide-gray-200 bg-white">
                     {filteredBookings.map((booking) => (
-                      <tr key={booking._id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">{booking.service || 'Service'}</div>
-                          <div className="text-sm text-gray-500">${booking.pricing?.estimatedCost || 0}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">{booking.mechanic?.businessName || booking.mechanic?.firstName + ' ' + booking.mechanic?.lastName || 'Mechanic'}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
-                            {booking.vehicle?.make} {booking.vehicle?.model}
+                      <div 
+                        key={booking._id} 
+                        className="p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                        onClick={() => navigate(`/client/bookings/${booking._id}`)}
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <h4 className="font-bold text-gray-950 text-base">{booking.service || 'Service'}</h4>
+                            <p className="text-sm text-gray-600 font-semibold">{booking.mechanic?.businessName || booking.mechanic?.firstName + ' ' + booking.mechanic?.lastName || 'Mechanic'}</p>
                           </div>
-                          <div className="text-sm text-gray-500">{booking.vehicle?.year}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">{formatDate(booking.scheduledDate)}</div>
-                          <div className="text-sm text-gray-500">{formatTime(booking.scheduledTime)}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(booking.status)}`}>
-                            {getStatusIcon(booking.status)}
-                            <span className="ml-1">{booking.status.replace('_', ' ')}</span>
+                            {booking.status.replace('_', ' ')}
                           </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex items-center space-x-2">
-                            <button className="text-primary-600 hover:text-primary-900">
-                              <Eye className="h-4 w-4" />
-                            </button>
-                            <button className="text-gray-600 hover:text-gray-900">
-                              <MessageSquare className="h-4 w-4" />
-                            </button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-xs text-gray-600 mt-3 pt-3 border-t border-gray-100">
+                          <div>
+                            <span className="font-semibold text-gray-500">Vehicle:</span> {booking.vehicle?.make} {booking.vehicle?.model}
                           </div>
-                        </td>
-                      </tr>
+                          <div>
+                            <span className="font-semibold text-gray-500">Date:</span> {formatDate(booking.scheduledDate)}
+                          </div>
+                          <div>
+                            <span className="font-semibold text-gray-500">Time:</span> {formatTime(booking.scheduledTime)}
+                          </div>
+                          <div>
+                            <span className="font-semibold text-gray-500">Est. Cost:</span> ${booking.pricing?.estimatedCost || 0}
+                          </div>
+                        </div>
+                        <div className="mt-3 flex justify-end space-x-2">
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              navigate(`/client/bookings/${booking._id}`)
+                            }}
+                            className="px-3 py-1.5 bg-primary-600 text-white text-xs font-bold rounded-lg hover:bg-primary-700 transition-colors"
+                          >
+                            View Details
+                          </button>
+                        </div>
+                      </div>
                     ))}
-                  </tbody>
-                </table>
+                  </div>
+                </>
               ) : (
                 <div className="text-center py-12">
                   <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -642,7 +660,6 @@ const ClientDashboard = () => {
             </div>
           </div>
         </div>
-      </main>
 
       {/* Add Vehicle Modal */}
       {showAddVehicle && (

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import axios from 'axios'
+import API_BASE_URL from '../../config/api'
 import { 
   Bell, 
   Calendar, 
@@ -16,8 +17,6 @@ import {
   MessageSquare,
   AlertTriangle
 } from 'lucide-react'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
 const MechanicNotifications = () => {
   const navigate = useNavigate()
@@ -144,16 +143,15 @@ const MechanicNotifications = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Notifications</h1>
-          <p className="text-gray-600 mt-2">Stay updated with new booking requests and service updates</p>
-        </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Notifications</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-1">Stay updated with new booking requests and service updates</p>
+      </div>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 mb-8">
+      {/* Summary Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-8">
           <div className="card p-6 border-l-4 border-warning-500">
             <div className="flex items-center">
               <AlertCircle className="h-8 w-8 text-warning-600 mr-3" />
@@ -692,7 +690,6 @@ const MechanicNotifications = () => {
             </p>
           </div>
         )}
-      </div>
     </div>
   )
 }
